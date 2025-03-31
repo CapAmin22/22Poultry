@@ -1,11 +1,10 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Calculator, ArrowRight, FileText, Building, BankIcon } from 'lucide-react';
+import { Calculator, ArrowRight, FileText, Building, Landmark } from 'lucide-react';
 import InfoCard from '@/components/ui/InfoCard';
 
 const Financial = () => {
@@ -32,7 +31,7 @@ const Financial = () => {
                 <InfoCard
                   title="Agricultural Loans"
                   description="Low-interest loans specific to agricultural development, including poultry farming."
-                  icon={<BankIcon size={24} className="text-poultry-blue" />}
+                  icon={<Landmark size={24} className="text-poultry-blue" />}
                   actionLabel="Explore Options"
                   onAction={() => {}}
                 />
