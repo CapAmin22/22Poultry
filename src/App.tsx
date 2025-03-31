@@ -11,28 +11,36 @@ import Training from "./pages/Training";
 import NewsWeather from "./pages/NewsWeather";
 import Network from "./pages/Network";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/market-data" element={<MarketData />} />
-          <Route path="/financial" element={<Financial />} />
-          <Route path="/training" element={<Training />} />
-          <Route path="/news-weather" element={<NewsWeather />} />
-          <Route path="/network" element={<Network />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  useEffect(() => {
+    // Update document title with new branding
+    document.title = "22Poultry - India's Poultry Industry Platform";
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/market-data" element={<MarketData />} />
+            <Route path="/financial" element={<Financial />} />
+            <Route path="/training" element={<Training />} />
+            <Route path="/news-weather" element={<NewsWeather />} />
+            <Route path="/network" element={<Network />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

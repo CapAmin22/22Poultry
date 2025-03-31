@@ -36,11 +36,11 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <img 
-                src="/placeholder.svg" 
-                alt="PoultryConnect Logo" 
-                className="h-10 w-10 mr-2"
+                src="/lovable-uploads/98888127-156c-43f9-a5aa-3d6573769c1c.png" 
+                alt="22Poultry Logo" 
+                className="h-10 w-auto mr-2"
               />
-              <span className="font-bold text-xl text-poultry-blue">PoultryConnect</span>
+              <span className="font-bold text-xl text-[#ea384c]">22<span className="text-[#1e40af]">Poultry</span></span>
             </Link>
           </div>
 
@@ -56,7 +56,7 @@ const Navbar = () => {
                     <Link 
                       key={index} 
                       to={item.path}
-                      className="flex items-center py-3 text-gray-700 hover:text-poultry-blue"
+                      className="flex items-center py-3 text-gray-700 hover:text-[#1e40af]"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.icon}
