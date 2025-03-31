@@ -48,9 +48,9 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">
-              <li className="text-sm">Email: info@22poultry.in</li>
-              <li className="text-sm">Phone: +91 123 456 7890</li>
-              <li className="text-sm">Address: Poultry Hub, Sector 9, New Delhi</li>
+              <li className="text-sm">Email: the22poultry@gmail.com</li>
+              <li className="text-sm">Phone: +91 8329556730</li>
+              <li className="text-sm">Address: BTM Layout 18th Main Road, 7th Cross Road, Bengaluru South, Karnataka 560076, IN</li>
             </ul>
           </div>
         </div>
