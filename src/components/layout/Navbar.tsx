@@ -21,6 +21,21 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    if (!isMenuOpen) return;
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-navbar="menu"]') && !target.closest('[data-navbar="toggle"]')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMenuOpen]);
+
   const navItems = [
     { name: 'Market Data', icon: <ChartBar className="mr-2 h-4 w-4" />, path: '/market-data' },
     { name: 'Financial', icon: <Calculator className="mr-2 h-4 w-4" />, path: '/financial' },
@@ -31,7 +46,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-6 py-3">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
@@ -46,21 +61,30 @@ const Navbar = () => {
 
           {isMobile ? (
             <>
-              <Button variant="ghost" size="icon" onClick={toggleMenu}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleMenu} 
+                className="tap-highlight-none"
+                data-navbar="toggle"
+              >
                 {isMenuOpen ? <X /> : <Menu />}
               </Button>
               
               {isMenuOpen && (
-                <div className="absolute top-16 left-0 right-0 bg-white shadow-md z-50 py-2 px-4">
+                <div 
+                  className="absolute top-16 left-0 right-0 bg-white shadow-md z-50 py-2 px-4 animate-in fade-in slide-in-from-top duration-200"
+                  data-navbar="menu"
+                >
                   {navItems.map((item, index) => (
                     <Link 
                       key={index} 
                       to={item.path}
-                      className="flex items-center py-3 text-gray-700 hover:text-[#1e40af]"
+                      className="flex items-center py-4 text-gray-700 hover:text-[#1e40af] border-b border-gray-100 last:border-0"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.icon}
-                      {item.name}
+                      <span className="ml-2">{item.name}</span>
                     </Link>
                   ))}
                 </div>

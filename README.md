@@ -1,4 +1,5 @@
-# Welcome to your Lovable project
+
+# 22Poultry - India's Poultry Industry Platform
 
 ## Project info
 
@@ -50,15 +51,54 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
+## Pushing to GitHub
+
+To push your project to GitHub:
+
+1. Create a new repository on GitHub
+2. Initialize Git in your project folder (if not already initialized):
+   ```
+   git init
+   ```
+3. Add your GitHub repository as remote:
+   ```
+   git remote add origin https://github.com/yourusername/your-repository-name.git
+   ```
+4. Add all files to staging:
+   ```
+   git add .
+   ```
+5. Commit your changes:
+   ```
+   git commit -m "Initial commit"
+   ```
+6. Push to GitHub:
+   ```
+   git push -u origin main
+   ```
+
+## Mobile Optimization
+
+This project is optimized for mobile devices with:
+
+- Responsive layout using Tailwind CSS
+- Touch-friendly UI elements
+- Properly sized tap targets
+- Mobile navigation menu
+- Optimized viewport settings
+- Performance optimizations for mobile browsers
+
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+- React Router
+- Recharts for data visualization
 
 ## How can I deploy this project?
 
