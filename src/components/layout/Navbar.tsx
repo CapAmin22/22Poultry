@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
   ChartBar, 
@@ -13,10 +13,12 @@ import {
   ShoppingCart
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Separator } from '@/components/ui/separator';
 
 const Navbar = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -46,17 +48,14 @@ const Navbar = () => {
     { name: 'Marketplace', icon: <ShoppingCart className="mr-2 h-4 w-4" />, path: '/marketplace' },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img 
-                src="/lovable-uploads/98888127-156c-43f9-a5aa-3d6573769c1c.png" 
-                alt="22Poultry Logo" 
-                className="h-10 w-auto mr-2"
-              />
               <span className="font-bold text-xl text-[#ea384c]">22<span className="text-[#1e40af]">Poultry</span></span>
             </Link>
           </div>
@@ -82,7 +81,7 @@ const Navbar = () => {
                     <Link 
                       key={index} 
                       to={item.path}
-                      className="flex items-center py-4 text-gray-700 hover:text-[#1e40af] border-b border-gray-100 last:border-0"
+                      className={`flex items-center py-4 ${isActive(item.path) ? 'text-primary font-medium' : 'text-gray-700 hover:text-[#1e40af]'} border-b border-gray-100 last:border-0`}
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.icon}
@@ -96,7 +95,10 @@ const Navbar = () => {
             <div className="flex space-x-1">
               {navItems.map((item, index) => (
                 <Link key={index} to={item.path}>
-                  <Button variant="ghost" className="flex items-center">
+                  <Button 
+                    variant={isActive(item.path) ? "default" : "ghost"} 
+                    className={`flex items-center ${isActive(item.path) ? 'bg-primary text-primary-foreground' : ''}`}
+                  >
                     {item.icon}
                     {item.name}
                   </Button>
@@ -106,6 +108,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
+      <Separator />
     </nav>
   );
 };

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ShoppingBag, Package, ArrowRight, TrendingUp, Shield, Check, Star } from 'lucide-react';
+import { ShoppingBag, Package, ArrowRight, TrendingUp, Shield, Check } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const MarketplaceHero = () => {
@@ -10,7 +10,7 @@ const MarketplaceHero = () => {
   return (
     <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-xl overflow-hidden shadow-md">
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} items-center`}>
-        <div className={`${isMobile ? 'w-full p-6' : 'w-3/5 p-8'}`}>
+        <div className={`${isMobile ? 'w-full p-6' : 'w-full p-8'}`}>
           <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mb-4 animate-fade-in">
             India's Premier Poultry Trading Platform
           </div>
@@ -64,37 +64,6 @@ const MarketplaceHero = () => {
               </div>
             ))}
           </div>
-        </div>
-        
-        <div className={`${isMobile ? 'w-full p-4' : 'w-2/5 p-8'} relative bg-blue-50`}>
-          <div className="relative z-10">
-            <div className="absolute top-0 left-0 w-full h-full bg-blue-900/5 rounded-full blur-3xl"></div>
-            <img 
-              src="/lovable-uploads/1bcc6f1a-0489-4e9c-b0e7-f21c5c094ef2.png" 
-              alt="Marketplace" 
-              className="w-full h-auto max-h-60 object-contain relative z-10 hover:scale-105 transition-transform duration-500" 
-            />
-            <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-blue-100 rounded-full animate-pulse"></div>
-            <div className="absolute -top-4 -left-4 w-16 h-16 bg-indigo-100 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-          </div>
-          
-          {!isMobile && (
-            <>
-              <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
-                <p className="text-xs font-medium text-blue-900">Trusted by over</p>
-                <p className="text-lg font-bold text-blue-900">5,000+ Farmers</p>
-              </div>
-              
-              <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm flex items-center">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-                  ))}
-                </div>
-                <span className="ml-1 text-xs font-medium">4.8/5</span>
-              </div>
-            </>
-          )}
         </div>
       </div>
     </div>

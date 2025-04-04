@@ -1,7 +1,10 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { ChevronDown, Filter } from 'lucide-react';
 
 // Mock product data with more realistic image paths
 const mockProducts = [
@@ -81,13 +84,34 @@ const mockProducts = [
 
 const MarketplaceListings = () => {
   const isMobile = useIsMobile();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const handleLoadMore = () => {
+    setIsLoading(true);
+    // Simulate loading delay
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  };
   
   return (
     <div className="animate-fade-in">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Available Products</h2>
-        <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{mockProducts.length} products</span>
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-semibold">Available Products</h2>
+          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{mockProducts.length} products</span>
+        </div>
+        
+        {!isMobile && (
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <Filter className="h-4 w-4" />
+            Sort By: Popular
+            <ChevronDown className="h-4 w-4 ml-1" />
+          </Button>
+        )}
       </div>
+      
+      <Separator className="mb-6" />
       
       <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'sm:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
         {mockProducts.map(product => (
@@ -96,8 +120,14 @@ const MarketplaceListings = () => {
       </div>
       
       <div className="mt-8 text-center">
-        <Button variant="outline" className="border-primary/30 hover:border-primary">
-          Load More Products
+        <Button 
+          variant="outline" 
+          className="border-primary/30 hover:border-primary px-6"
+          onClick={handleLoadMore}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Load More Products'}
+          {isLoading ? null : <ChevronDown className="ml-2 h-4 w-4" />}
         </Button>
       </div>
     </div>
