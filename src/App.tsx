@@ -10,6 +10,7 @@ import Financial from "./pages/Financial";
 import Training from "./pages/Training";
 import NewsWeather from "./pages/NewsWeather";
 import Network from "./pages/Network";
+import Marketplace from "./pages/Marketplace";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/training" element={<Training />} />
             <Route path="/news-weather" element={<NewsWeather />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/marketplace" element={<Marketplace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

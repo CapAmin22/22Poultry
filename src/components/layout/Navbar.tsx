@@ -9,7 +9,8 @@ import {
   Newspaper, 
   Users, 
   Menu, 
-  X 
+  X,
+  ShoppingCart
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -42,6 +43,7 @@ const Navbar = () => {
     { name: 'Training', icon: <GraduationCap className="mr-2 h-4 w-4" />, path: '/training' },
     { name: 'News & Weather', icon: <Newspaper className="mr-2 h-4 w-4" />, path: '/news-weather' },
     { name: 'Network', icon: <Users className="mr-2 h-4 w-4" />, path: '/network' },
+    { name: 'Marketplace', icon: <ShoppingCart className="mr-2 h-4 w-4" />, path: '/marketplace' },
   ];
 
   return (
