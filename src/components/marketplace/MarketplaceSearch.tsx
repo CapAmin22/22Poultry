@@ -2,7 +2,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, CheckCircle } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -25,15 +25,15 @@ const MarketplaceSearch = () => {
       </div>
       
       <div className={`flex items-center justify-between ${isMobile ? 'flex-col gap-2' : 'flex-row'}`}>
-        <h3 className="font-medium">Filters</h3>
-        {!isMobile && <Button variant="ghost" size="sm" className="h-8">Clear All</Button>}
+        <h3 className="font-medium text-primary">Filters</h3>
+        {!isMobile && <Button variant="ghost" size="sm" className="h-8 text-gray-500 hover:text-primary">Clear All</Button>}
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div>
-          <label className="text-sm font-medium mb-1 block">Product Category</label>
+          <label className="text-sm font-medium mb-1 block text-gray-700">Product Category</label>
           <Select>
-            <SelectTrigger>
+            <SelectTrigger className="focus:ring-primary">
               <SelectValue placeholder="All categories" />
             </SelectTrigger>
             <SelectContent>
@@ -48,9 +48,9 @@ const MarketplaceSearch = () => {
         </div>
         
         <div>
-          <label className="text-sm font-medium mb-1 block">Location</label>
+          <label className="text-sm font-medium mb-1 block text-gray-700">Location</label>
           <Select>
-            <SelectTrigger>
+            <SelectTrigger className="focus:ring-primary">
               <SelectValue placeholder="All India" />
             </SelectTrigger>
             <SelectContent>
@@ -65,22 +65,25 @@ const MarketplaceSearch = () => {
         </div>
         
         <div>
-          <div className="flex justify-between mb-1">
-            <label className="text-sm font-medium">Price Range</label>
-            <span className="text-sm text-gray-500">₹{priceRange[0]} - ₹{priceRange[1]}</span>
+          <div className="flex justify-between mb-2">
+            <label className="text-sm font-medium text-gray-700">Price Range</label>
+            <span className="text-sm bg-gray-100 px-2 py-0.5 rounded text-primary font-medium">
+              ₹{priceRange[0]} - ₹{priceRange[1]}
+            </span>
           </div>
           <Slider 
             defaultValue={[0, 10000]} 
             max={10000} 
             step={100}
             onValueChange={(value) => setPriceRange(value)}
+            className="my-4"
           />
         </div>
         
         <div>
-          <label className="text-sm font-medium mb-1 block">Sort By</label>
+          <label className="text-sm font-medium mb-1 block text-gray-700">Sort By</label>
           <Select>
-            <SelectTrigger>
+            <SelectTrigger className="focus:ring-primary">
               <SelectValue placeholder="Most Popular" />
             </SelectTrigger>
             <SelectContent>
@@ -93,9 +96,23 @@ const MarketplaceSearch = () => {
           </Select>
         </div>
         
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span>Verified Sellers Only</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span>Free Shipping</span>
+          </div>
+        </div>
+        
         {isMobile && (
           <div className="pt-2">
-            <Button className="w-full">Apply Filters</Button>
+            <Button className="w-full bg-primary hover:bg-primary/90">
+              <Filter className="mr-2 h-4 w-4" />
+              Apply Filters
+            </Button>
           </div>
         )}
       </div>
