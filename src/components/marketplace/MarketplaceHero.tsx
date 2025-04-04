@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ShoppingBag, Package, ArrowRight, TrendingUp, Shield } from 'lucide-react';
+import { ShoppingBag, Package, ArrowRight, TrendingUp, Shield, Check, Star } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const MarketplaceHero = () => {
@@ -11,6 +11,10 @@ const MarketplaceHero = () => {
     <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-xl overflow-hidden shadow-md">
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} items-center`}>
         <div className={`${isMobile ? 'w-full p-6' : 'w-3/5 p-8'}`}>
+          <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mb-4 animate-fade-in">
+            India's Premier Poultry Trading Platform
+          </div>
+          
           <h1 className="text-2xl md:text-4xl font-bold text-blue-900 mb-4">
             Find the Best Poultry Products
           </h1>
@@ -40,7 +44,7 @@ const MarketplaceHero = () => {
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-6">
             <Button className="bg-primary hover:bg-primary/90 transition-all">
               <ShoppingBag className="mr-2 h-4 w-4" />
               Start Shopping
@@ -50,6 +54,15 @@ const MarketplaceHero = () => {
               Sell Products
               <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {["Quality Assured", "Transparent Pricing", "Verified Partners"].map((item, index) => (
+              <div key={index} className="flex items-center text-xs text-gray-600 bg-gray-100 rounded-full px-3 py-1">
+                <Check className="mr-1 h-3 w-3 text-green-500" />
+                {item}
+              </div>
+            ))}
           </div>
         </div>
         
@@ -66,10 +79,21 @@ const MarketplaceHero = () => {
           </div>
           
           {!isMobile && (
-            <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
-              <p className="text-xs font-medium text-blue-900">Trusted by over</p>
-              <p className="text-lg font-bold text-blue-900">5,000+ Farmers</p>
-            </div>
+            <>
+              <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <p className="text-xs font-medium text-blue-900">Trusted by over</p>
+                <p className="text-lg font-bold text-blue-900">5,000+ Farmers</p>
+              </div>
+              
+              <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm flex items-center">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className="h-3 w-3 text-yellow-500 fill-yellow-500" />
+                  ))}
+                </div>
+                <span className="ml-1 text-xs font-medium">4.8/5</span>
+              </div>
+            </>
           )}
         </div>
       </div>

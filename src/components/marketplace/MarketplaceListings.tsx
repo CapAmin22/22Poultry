@@ -14,7 +14,8 @@ const mockProducts = [
     image: "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     rating: 4.8,
     reviews: 124,
-    seller: "Karnataka Poultry Farms"
+    seller: "Karnataka Poultry Farms",
+    isVerified: true
   },
   {
     id: 2,
@@ -25,7 +26,9 @@ const mockProducts = [
     image: "https://images.unsplash.com/photo-1569127959161-2b1297b2d9a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     rating: 4.7,
     reviews: 89,
-    seller: "Telangana Egg Suppliers"
+    seller: "Telangana Egg Suppliers",
+    isVerified: true,
+    discount: 15
   },
   {
     id: 3,
@@ -47,7 +50,9 @@ const mockProducts = [
     image: "https://images.unsplash.com/photo-1543699565-003b8adda5fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     rating: 4.6,
     reviews: 32,
-    seller: "Delhi Farm Equipment"
+    seller: "Delhi Farm Equipment",
+    isVerified: true,
+    discount: 10
   },
   {
     id: 5,
@@ -58,7 +63,8 @@ const mockProducts = [
     image: "https://images.unsplash.com/photo-1610733779181-902949b0cf62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     rating: 4.9,
     reviews: 18,
-    seller: "Kerala Duck Farms"
+    seller: "Kerala Duck Farms",
+    isVerified: true
   },
   {
     id: 6,
@@ -77,7 +83,7 @@ const MarketplaceListings = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div>
+    <div className="animate-fade-in">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Available Products</h2>
         <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{mockProducts.length} products</span>
@@ -87,6 +93,12 @@ const MarketplaceListings = () => {
         {mockProducts.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
+      </div>
+      
+      <div className="mt-8 text-center">
+        <Button variant="outline" className="border-primary/30 hover:border-primary">
+          Load More Products
+        </Button>
       </div>
     </div>
   );
