@@ -1,7 +1,7 @@
-
 import React from 'react';
 import ProductCard from './ProductCard';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 
 // Mock product data with more realistic image paths
 const mockProducts = [
