@@ -10,7 +10,8 @@ import {
   Users, 
   Menu, 
   X,
-  ShoppingCart
+  ShoppingCart,
+  UserCircle
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Separator } from '@/components/ui/separator';
@@ -46,6 +47,7 @@ const Navbar = () => {
     { name: 'News & Weather', icon: <Newspaper className="mr-2 h-4 w-4" />, path: '/news-weather' },
     { name: 'Network', icon: <Users className="mr-2 h-4 w-4" />, path: '/network' },
     { name: 'Marketplace', icon: <ShoppingCart className="mr-2 h-4 w-4" />, path: '/marketplace' },
+    { name: 'Profile', icon: <UserCircle className="mr-2 h-4 w-4" />, path: '/profile' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -55,7 +57,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center gap-2">
+              <img 
+                src="/lovable-uploads/98888127-156c-43f9-a5aa-3d6573769c1c.png"
+                alt="22Poultry Logo"
+                className="h-8 w-auto"
+              />
               <span className="font-bold text-xl text-[#ea384c]">22<span className="text-[#1e40af]">Poultry</span></span>
             </Link>
           </div>

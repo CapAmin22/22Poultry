@@ -11,6 +11,9 @@ import Training from "./pages/Training";
 import NewsWeather from "./pages/NewsWeather";
 import Network from "./pages/Network";
 import Marketplace from "./pages/Marketplace";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -36,6 +39,9 @@ const App = () => {
             <Route path="/news-weather" element={<NewsWeather />} />
             <Route path="/network" element={<Network />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
