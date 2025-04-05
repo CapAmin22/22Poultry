@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -45,10 +44,17 @@ const formSchema = z.object({
 });
 
 const Register = () => {
-  const { signUp } = useAuth();
+  const { signUp, user, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  
+  useEffect(() => {
+    if (user && !authLoading) {
+      navigate("/", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,7 +73,6 @@ const Register = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      // Prepare user metadata for Supabase
       const metadata = {
         first_name: values.firstName,
         last_name: values.lastName,
@@ -84,11 +89,19 @@ const Register = () => {
           variant: "destructive"
         });
       } else {
+        setRegistrationSuccess(true);
         toast({
           title: "Account created successfully",
           description: "Please check your email to verify your account.",
         });
-        navigate("/login");
+        
+        setTimeout(() => {
+          navigate("/login", { 
+            state: { 
+              message: "Account created successfully. Please login to continue." 
+            }
+          });
+        }, 2000);
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -100,6 +113,45 @@ const Register = () => {
     } finally {
       setIsSubmitting(false);
     }
+  }
+  
+  if (authLoading) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto py-10 px-4 sm:px-6">
+          <div className="flex items-center justify-center p-12">
+            <div className="text-center">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+              <p className="text-gray-600">Checking authentication status...</p>
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+  
+  if (registrationSuccess) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto py-10 px-4 sm:px-6">
+          <div className="max-w-md mx-auto text-center">
+            <div className="bg-green-50 p-8 rounded-lg shadow-sm border border-green-100">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="h-8 w-8 text-green-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h2>
+              <p className="text-gray-600 mb-4">
+                Your account has been created. Please check your email to verify your account.
+              </p>
+              <p className="text-gray-600 mb-6">
+                Redirecting you to the login page...
+              </p>
+              <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
   }
   
   return (

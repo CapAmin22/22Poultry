@@ -53,7 +53,7 @@ const Navbar = () => {
         title: "Logged out successfully",
         description: "You have been logged out of your account."
       });
-      navigate('/');
+      navigate('/login');
       setIsMenuOpen(false);
     } catch (error) {
       console.error('Logout error:', error);
@@ -65,16 +65,17 @@ const Navbar = () => {
     }
   };
 
-  const navItems = [
+  // Only show navigation options if user is logged in
+  const navItems = user ? [
     { name: 'Market Data', icon: <ChartBar className="mr-2 h-4 w-4" />, path: '/market-data' },
     { name: 'Financial', icon: <Calculator className="mr-2 h-4 w-4" />, path: '/financial' },
     { name: 'Training', icon: <GraduationCap className="mr-2 h-4 w-4" />, path: '/training' },
     { name: 'News & Weather', icon: <Newspaper className="mr-2 h-4 w-4" />, path: '/news-weather' },
     { name: 'Network', icon: <Users className="mr-2 h-4 w-4" />, path: '/network' },
     { name: 'Marketplace', icon: <ShoppingCart className="mr-2 h-4 w-4" />, path: '/marketplace' },
-  ];
+  ] : [];
 
-  // Only show profile if user is logged in
+  // Profile option if user is logged in, login option if not
   const authItems = user ? [
     { name: 'Profile', icon: <UserCircle className="mr-2 h-4 w-4" />, path: '/profile' },
   ] : [
@@ -88,7 +89,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to={user ? "/" : "/login"} className="flex items-center gap-2">
               <img 
                 src="/lovable-uploads/98888127-156c-43f9-a5aa-3d6573769c1c.png"
                 alt="22Poultry Logo"

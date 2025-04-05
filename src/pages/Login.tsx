@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -62,7 +61,7 @@ const Login = () => {
       } else {
         toast({
           title: "Login successful",
-          description: "Welcome back to 22Poultry!",
+          description: "Welcome to 22Poultry!",
         });
         // Navigate will happen automatically due to the useEffect above
       }
@@ -99,8 +98,8 @@ const Login = () => {
       <div className="container mx-auto py-10 px-4 sm:px-6">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to your 22Poultry account</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to 22Poultry</h1>
+            <p className="text-gray-600">Sign in to access India's premier poultry platform</p>
           </div>
           
           <Card className="shadow-lg border-gray-200">
