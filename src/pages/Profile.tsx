@@ -11,6 +11,7 @@ import ProfileSettings from '@/components/profile/ProfileSettings';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { Loader2 } from 'lucide-react';
 
 const Profile = () => {
   const isMobile = useIsMobile();
@@ -33,7 +34,7 @@ const Profile = () => {
   useEffect(() => {
     const currentTab = getTabFromUrl();
     if (activeTab !== currentTab) {
-      navigate(`/profile?tab=${activeTab}`);
+      navigate(`/profile?tab=${activeTab}`, { replace: true });
     }
   }, [activeTab, navigate]);
   
@@ -42,12 +43,15 @@ const Profile = () => {
     setActiveTab(getTabFromUrl());
   }, [location.search]);
   
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated - wait for auth state to be known
   useEffect(() => {
     if (!isLoading && !user) {
-      navigate('/login');
+      navigate('/login', { 
+        replace: true,
+        state: { from: location.pathname + location.search }
+      });
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, location]);
   
   if (isLoading) {
     return (
@@ -55,13 +59,18 @@ const Profile = () => {
         <div className="container mx-auto py-6">
           <div className="flex items-center justify-center p-12">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
               <p className="text-gray-600">Loading profile...</p>
             </div>
           </div>
         </div>
       </MainLayout>
     );
+  }
+
+  // Safety check - shouldn't reach here if not authenticated due to the redirect
+  if (!user) {
+    return null;
   }
   
   return (

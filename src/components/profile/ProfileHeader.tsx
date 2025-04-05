@@ -1,117 +1,105 @@
 
-import React, { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { MapPin, Star, Shield, Clock, Loader2 } from 'lucide-react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/context/AuthContext';
 import { useProfile } from '@/hooks/use-profile';
-import { useNavigate } from 'react-router-dom';
+import { Loader2, MapPin, Building2, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
 
 const ProfileHeader = () => {
   const isMobile = useIsMobile();
-  const { user, signOut } = useAuth();
-  const { profile, isLoading } = useProfile();
-  const navigate = useNavigate();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  
-  const handleSignOut = async () => {
-    setIsLoggingOut(true);
-    await signOut();
-    navigate('/login');
-  };
-  
+  const { profile, isLoading, error } = useProfile();
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-  
-  if (!user || !profile) {
-    return (
-      <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-xl overflow-hidden shadow-sm p-6">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">Please sign in to view your profile</p>
-          <Button onClick={() => navigate('/login')}>Sign In</Button>
+      <div className="w-full p-6 bg-white rounded-lg shadow-sm flex items-center justify-center">
+        <div className="text-center p-6">
+          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-600">Loading profile...</p>
         </div>
       </div>
     );
   }
-  
+
+  if (error) {
+    return (
+      <div className="w-full p-6 bg-white rounded-lg shadow-sm">
+        <div className="text-center p-6">
+          <p className="text-red-500 mb-2">Error loading profile</p>
+          <p className="text-gray-600 text-sm">{error.message}</p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   const getInitials = () => {
-    const first = profile.first_name?.charAt(0) || '';
-    const last = profile.last_name?.charAt(0) || '';
+    if (!profile) return '';
+    const first = profile.first_name?.[0] || '';
+    const last = profile.last_name?.[0] || '';
     return (first + last).toUpperCase();
   };
-  
+
   const getFullName = () => {
-    return `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'User';
+    if (!profile) return 'User';
+    if (profile.first_name && profile.last_name) {
+      return `${profile.first_name} ${profile.last_name}`;
+    }
+    return profile.first_name || profile.last_name || 'User';
   };
-  
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-  };
-  
+
   return (
-    <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-xl overflow-hidden shadow-sm animate-fade-in">
-      <div className={`p-6 sm:p-8 ${isMobile ? 'flex flex-col items-center text-center' : 'flex items-center gap-8'}`}>
-        <div className={`${isMobile ? 'mb-4' : ''}`}>
-          <Avatar className="h-24 w-24 border-4 border-white shadow-sm">
-            <AvatarImage src={profile.avatar_url || undefined} alt={getFullName()} />
-            <AvatarFallback>{getInitials()}</AvatarFallback>
+    <div className="w-full p-6 bg-white rounded-lg shadow-sm">
+      <div className={`flex ${isMobile ? 'flex-col items-center text-center' : 'flex-row items-start'} gap-6`}>
+        <div className="flex-shrink-0">
+          <Avatar className={`${isMobile ? 'h-24 w-24' : 'h-32 w-32'} border-4 border-white shadow-md`}>
+            <AvatarImage src={profile?.avatar_url || ''} />
+            <AvatarFallback className="text-2xl">{getInitials()}</AvatarFallback>
           </Avatar>
         </div>
         
-        <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
+        <div className={`flex-1 ${isMobile ? 'w-full' : ''}`}>
+          <div className={`flex ${isMobile ? 'flex-col items-center' : 'flex-row items-start justify-between'} mb-2`}>
             <h1 className="text-2xl font-bold text-gray-900">{getFullName()}</h1>
-            {user.email_confirmed_at && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
-                <Shield className="mr-1 h-3 w-3" />
-                Verified
-              </Badge>
-            )}
+            
+            <div className={`${isMobile ? 'mt-4' : ''}`}>
+              <Button variant="outline" size="sm" className="mr-2">
+                Share Profile
+              </Button>
+              <Button size="sm">Edit Profile</Button>
+            </div>
           </div>
           
-          <p className="text-gray-600 mb-3">{profile.business_type?.charAt(0).toUpperCase() + profile.business_type?.slice(1) || 'User'}</p>
-          
-          <div className="flex flex-wrap gap-4 text-sm">
-            {profile.location && (
+          <div className="space-y-2 mt-4">
+            {profile?.business_type && (
               <div className="flex items-center text-gray-600">
-                <MapPin className="mr-1 h-4 w-4 text-gray-400" />
-                {profile.location}
+                <Building2 className="h-4 w-4 mr-2" />
+                <span>{profile.business_type}</span>
               </div>
             )}
+            
+            {profile?.location && (
+              <div className="flex items-center text-gray-600">
+                <MapPin className="h-4 w-4 mr-2" />
+                <span>{profile.location}</span>
+              </div>
+            )}
+            
             <div className="flex items-center text-gray-600">
-              <Clock className="mr-1 h-4 w-4 text-gray-400" />
-              Member since {formatDate(profile.created_at)}
+              <Calendar className="h-4 w-4 mr-2" />
+              <span>Joined {profile?.created_at ? format(new Date(profile.created_at), 'MMMM yyyy') : 'Recently'}</span>
             </div>
-            {/* Rating placeholder - to be implemented in the future */}
           </div>
         </div>
-        
-        {!isMobile && (
-          <div className="flex space-x-2">
-            <Button variant="outline" onClick={() => navigate('/profile?tab=settings')}>Edit Profile</Button>
-            <Button variant="outline" onClick={handleSignOut} disabled={isLoggingOut}>
-              {isLoggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign Out'}
-            </Button>
-          </div>
-        )}
       </div>
-      
-      {isMobile && (
-        <div className="px-6 pb-6 flex space-x-2">
-          <Button variant="outline" className="flex-1" onClick={() => navigate('/profile?tab=settings')}>Edit Profile</Button>
-          <Button variant="outline" className="flex-1" onClick={handleSignOut} disabled={isLoggingOut}>
-            {isLoggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign Out'}
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
