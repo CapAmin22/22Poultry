@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -9,10 +9,60 @@ import ProfileListings from '@/components/profile/ProfileListings';
 import ProfileOrders from '@/components/profile/ProfileOrders';
 import ProfileSettings from '@/components/profile/ProfileSettings';
 import ProfileHeader from '@/components/profile/ProfileHeader';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
 const Profile = () => {
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState('info');
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Parse tab from URL query parameter
+  const getTabFromUrl = () => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    return tab === 'info' || tab === 'listings' || tab === 'orders' || tab === 'settings' 
+      ? tab 
+      : 'info';
+  };
+  
+  const [activeTab, setActiveTab] = useState(getTabFromUrl());
+  
+  // Update URL when tab changes
+  useEffect(() => {
+    const currentTab = getTabFromUrl();
+    if (activeTab !== currentTab) {
+      navigate(`/profile?tab=${activeTab}`);
+    }
+  }, [activeTab, navigate]);
+  
+  // Update tab when URL changes
+  useEffect(() => {
+    setActiveTab(getTabFromUrl());
+  }, [location.search]);
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !user) {
+      navigate('/login');
+    }
+  }, [user, isLoading, navigate]);
+  
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto py-6">
+          <div className="flex items-center justify-center p-12">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading profile...</p>
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
   
   return (
     <MainLayout>

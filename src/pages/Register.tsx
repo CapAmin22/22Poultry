@@ -1,18 +1,20 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Info, Check } from 'lucide-react';
+import { Info, Check, Loader2 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -33,6 +35,9 @@ const formSchema = z.object({
   confirmPassword: z.string(),
   userType: z.enum(["farmer", "supplier", "buyer", "processor"], {
     required_error: "Please select a user type."
+  }),
+  acceptTerms: z.boolean().refine(val => val === true, {
+    message: "You must accept the terms and conditions to proceed."
   })
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -40,6 +45,11 @@ const formSchema = z.object({
 });
 
 const Register = () => {
+  const { signUp } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,13 +59,47 @@ const Register = () => {
       phone: "",
       password: "",
       confirmPassword: "",
-      userType: "farmer"
+      userType: "farmer",
+      acceptTerms: false
     }
   });
   
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // In a real implementation, this would handle the registration process
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    try {
+      // Prepare user metadata for Supabase
+      const metadata = {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        phone: values.phone,
+        business_type: values.userType
+      };
+      
+      const { error } = await signUp(values.email, values.password, metadata);
+      
+      if (error) {
+        toast({
+          title: "Registration failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Account created successfully",
+          description: "Please check your email to verify your account.",
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast({
+        title: "Registration failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
   
   return (
@@ -235,12 +279,42 @@ const Register = () => {
                     />
                   </div>
                   
+                  <FormField
+                    control={form.control}
+                    name="acceptTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox 
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>
+                            I agree to the 22Poultry <Link to="#" className="text-primary hover:underline">Terms of Service</Link> and <Link to="#" className="text-primary hover:underline">Privacy Policy</Link>
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  
                   <div className="flex items-start gap-2 p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
                     <Info className="h-5 w-5 flex-shrink-0 mt-0.5" />
                     <p>Your registration information will be verified by our team to ensure the security and authenticity of the 22Poultry platform. This helps protect all users in our ecosystem.</p>
                   </div>
                   
-                  <Button type="submit" className="w-full">Create Account</Button>
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Creating Account...
+                      </>
+                    ) : (
+                      'Create Account'
+                    )}
+                  </Button>
                 </form>
               </Form>
             </CardContent>
