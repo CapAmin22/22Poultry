@@ -4,9 +4,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
 import { Tables } from '@/integrations/supabase/types';
 
+// Define a type for the profile
+type Profile = Tables<'profiles'>;
+
 export function useProfile() {
   const { user } = useAuth();
-  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -42,7 +45,7 @@ export function useProfile() {
     fetchProfile();
   }, [user]);
 
-  const updateProfile = async (updates: Partial<Tables<'profiles'>>) => {
+  const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('User not authenticated') };
 
     try {
